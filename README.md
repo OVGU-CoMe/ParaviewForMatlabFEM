@@ -1,8 +1,10 @@
-This visualisation toolbox is used for exporting FEM results computed in Matlab to .vtu files which can be then opened by Paraview.
+This visualisation toolbox is used for exporting FEM results computed in Matlab to .vtu files which can be then opened by Paraview. 
+
+---
 
 # VTU File Structure Exported files #
 
-The exported .vtu files is wrapped by the staring tags <VTKFile>,<UnstructuredGrid> and </Piece>, and closing tags </Piece>, </VTKFile> </UnstructuredGrid>, in order.
+The exported `.vtu` files is wrapped by the staring tags `<VTKFile>`, `<UnstructuredGrid>` and `</Piece>`, and closing tags `</Piece>`, `</VTKFile>` and `</UnstructuredGrid>`, in order.
 The actuall data for the visualization is defined in the innermost block, i.e. the Piece-block, and includes the following for 4 blocks:
 
 - Points
@@ -14,10 +16,10 @@ While the "Points" and "Cells" blocks define the mesh itself, the "PointData" an
 mesh contains only nodal results, such as displacements, the "CellData" can be left out.
 
 ## **Points** ##
-In the block defined by the tags <Points> and </Points>, the nodal coordinates are defined. Note that for 2D data, the z-coordinates cannot miss, but it has to be zero.
+In the block defined by the tags `<Points>` and `</Points>`, the nodal coordinates are defined. Note that for 2D data, the z-coordinates cannot miss, but it has to be zero.
 
 ## **Cells** ##
-In the block marked by the tags <Cells> and </Cells>, the topology data is given using the following sub-blocks defined as DataArrays:
+In the block marked by the tags `<Cells>` and `</Cells>`, the topology data is given using the following sub-blocks defined as DataArrays:
 
  - connectivity
  - offsets
@@ -45,14 +47,16 @@ are given in the opening DataArray tag by "Name" and "NumberOfComponents".
 ## **Cell Data** ##
 In some cases, the exported data contains values, that are accosiated with the elements and not by the nodes, such as material IDs, or domain IDs. Such data is defined in the "CellData" block.
 
-
+--- 
 # Usage #
-The .vtu file is created by the Matlab function writevtu(...) with the following inputs.
+The `.vtu` file is created by the Matlab function `writevtu(...)` with the following inputs.
 
-## dim ##
+**dim** - Dimension of the problem. It should be either '2D' or '3D'.
 
-## DataStructures ##
+**DataStructures**
 
-## PlotSettings ##
+**PlotSettings** - It is a structure variable with the fields `PlottSettings.filedir`, `PlottSettings.filename`, and `PlottSettings.fileInfo`, where the first two fields are selfexplanatory. The third field allows the user to write
+additional information, meta-data to the exported .vtu file. The content of `fileInfo` will be added as comments to the vtu file. If `fileInfo` contains so much text that it requires multiple lines in the vtu file, `fileInfo` is a
+cell array, and the strings stored in the individual cells are written below each other. A use-case for `fileInfo` is for example the excitation frequency or step data associated with the given plot.
 
 
