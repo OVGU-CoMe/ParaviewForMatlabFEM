@@ -53,7 +53,39 @@ The `.vtu` file is created by the Matlab function `writevtu(...)` with the follo
 
 **dim** - Dimension of the problem. It should be either '2D' or '3D'.
 
-**DataStructures**
+**DataStructures** - It is a cell array containing relavant information for a part of the mesh. If the mesh contains multiple element types, each data associated with the different element types is a unique cell in the `DataStructures`, like
+<br/><br/>
+```matlab
+DataStructures{1} = DataStructure1;
+DataStructures{2} = DataStructure2;
+```
+
+Each DataStructure contains 4 fields, `DataStructure1.Points`, `DataStructure1.Connectivity`, `DataStructure1.PointData`, and `DataStructure1.CellData`, where the first 2 field contain mesh-data and the second two results associated with the
+nodes and cells. Both `PointData` and `CellData` are cell arrays, where for each field to be plotted, a new cell is created. For example, the first field in `PointData` may contain the displacements
+<br/><br/>
+
+```matlab
+PointData{1}.name = 'Displacement';
+PointData{1}.array = [UX, UY, UZ];
+```
+
+while the second field is an arbitrary function with 4 fields. Here, also the component names are given.
+<br/><br/>
+
+```matlab
+PointData{2}.name = 'My function';
+PointData{2}.componentNames = {'F1', 'F1', 'F3', 'F4'};
+PointData{2}.array = [F1, F2, F3, F4];
+```
+
+The same structure applies also to content of `CellData`. For example:
+<br/><br/>
+
+```matlab
+CellData{1}.name = 'Material IDs';
+CellData{1}.array = matIDs;
+```
+
 
 **PlotSettings** - It is a structure variable with the fields `PlottSettings.filedir`, `PlottSettings.filename`, and `PlottSettings.fileInfo`, where the first two fields are selfexplanatory. The third field allows the user to write
 additional information, meta-data to the exported .vtu file. The content of `fileInfo` will be added as comments to the vtu file. If `fileInfo` contains so much text that it requires multiple lines in the vtu file, `fileInfo` is a
