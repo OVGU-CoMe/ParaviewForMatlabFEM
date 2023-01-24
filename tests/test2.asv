@@ -1,5 +1,7 @@
 clear all
 
+filedir = 'C:\Users\petoe\Documents\git_repository\SEM-SCM_Code\subroutines\Visualization\ParaviewForMatlabFEM\tests';
+
 %% Define Mesh
 Coor = [
     0     0;
@@ -48,45 +50,26 @@ Connectivity = [
     18    19    24    23;
     19    20    25    24];
 
-%% Some PointData
-Data = [];
 
-% Displacements -----------------------------------------------------------
-UX = Coor(:,1);
-UY = Coor(:,1).*Coor(:,2);
+t = linspace(0,100);
+
+for i = 1:length(t)
+
+
+UX = Coor(:,1)*sin( t(i) );
+UY = Coor(:,1).*Coor(:,2)*sin( t(i) );
 UZ = zeros(size(UX));
 
-Data.name = 'Displacement';
-Data.array = [UX, UY, UZ];
+PointData{1}.name = 'Displacement';
+PointData{1}.array = [UX, UY, UZ];
 
-PointData{1} = Data;
 
-% Custom function ---------------------------------------------------------
-% As a second field, we create an arbitrary function with 4 components. 
-F1 = sin(Coor(:,1)); % Arbitrary field component nr.1
-F2 = cos(Coor(:,2)); % Arbitrary field component nr.2
-F3 = Coor(:,1).*Coor(:,2); % Arbitrary field component nr.3
-F4 = 2*ones(size(Coor,1),1); % Arbitrary field component nr.4
+% Create data structures
+% In the current example, we only have one data structure. If the mesh
+% would contain multiple element types, then all the quads associated data
+% would be in cell of the DataStructures, and the data associated with e.g.
+% triangular elements would be in the second cell.
 
-% For the chosen field, we also add names to the different components
-PointData{2}.name = 'My function';
-Data.componentNames = {'F1', 'Other field', 'field name','blabla'};
-Data.array = [F1 F2 F3 F4];
-
-PointData{2} = Data;
-
-%% Some CellData
-
-addCellData = true;
-
-if addCellData
-    Data = [];
-    Data.name = 'Element IDs';
-    Data.array = (1:size(Connectivity,1))';
-    CellData{1} = Data;
-end
-
-%%
 DataStructures{1}.Coor = Coor;
 DataStructures{1}.Connectivity = Connectivity;
 DataStructures{1}.PointData = PointData;
@@ -100,9 +83,17 @@ end
 
 
 %% Define meta data for the plot
-PlotSettings.filedir = 'C:\Users\petoe\Documents\git_repository\SEM-SCM_Code\subroutines\Visualization\ParaviewForMatlabFEM';
-PlotSettings.filename = 'test1';
+
+PlotSettings.filedir = filedir;
+PlotSettings.filename = ['test2_' sprintf('%03d',i)];
 PlotSettings.fileInfo = {'This is a test!', 'This is a second line'};
+
 
 %% Create vtu file
 writevtu('2D',DataStructures,PlotSettings);
+
+end
+
+
+
+mergeParaviewFiles2Collection(filedir,filedirr,goalFilename,timesteps)

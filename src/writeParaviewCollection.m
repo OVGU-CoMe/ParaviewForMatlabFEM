@@ -1,6 +1,6 @@
 function writeParaviewCollection(sourceFolder,sourceFilenames,goalFolder,goalFilename,timesteps)
 
-% sourceFolder = strrep(sourceFolder,'\','/');
+sourceFolder = strrep(sourceFolder,'\','/');
 
 fileID = fopen(fullfile(goalFolder, [goalFilename '.pvd']),'wt');
 disp(['VTU collection file written: ' fullfile(goalFolder,[goalFilename '.pvd'])])
@@ -31,7 +31,7 @@ for i = 1:length(timesteps)
             'timestep= "' timestepSTR '" ',...
             'group="" ',...
             'part="' num2str(i-1) '" ',...
-            'file="' 'Paraview' '/' sourceFilenames{i} '"',...
+            'file="' sourceFolder '/' sourceFilenames{i} '"',...
             '/> \n']);
         
         prevTimestepSTR = timestepSTR;
@@ -46,14 +46,18 @@ fprintf(fileID,'</VTKFile> \n');
 % If some duplicted timesteps are encountered (e.g. due to duplicated
 % eigenfrequencies) write an output file in which the modified IDs are
 % listed.
-filename = 'Modified_timesteps_for_Paraview.txt';
+
 if ~isempty(dupIDs)
-   warning([num2str(length(dupIDs)) ' duplicated timestep values were encountered!',...
-       ' For more info see file: ' filename ]) 
+    filename = 'Modified_timesteps_for_Paraview.txt';
+
+    warning([num2str(length(dupIDs)) ' duplicated timestep values were encountered!',...
+        ' For more info see file: ' filename ])
+
+    fileID = fopen(fullfile(goalFolder,filename),'w');
+    fprintf(fileID,'%d\n',dupIDs);
+    fclose(fileID);
 end
-fileID = fopen(fullfile(goalFolder,filename),'w');
-fprintf(fileID,'%d\n',dupIDs);
-fclose(fileID);
+
 
 end
 
