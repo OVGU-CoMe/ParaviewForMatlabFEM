@@ -267,9 +267,6 @@ for i = 1:length(data{1}.(DataBlock))
     end
     
     for k = 1:length(data)
-        if ~isreal(data{k}.(DataBlock){i}.array)
-            disp('most');
-        end
         fprintf(fileID,['\t\t\t' arrayformat '\n'], data{k}.(DataBlock){i}.array');
     end
     fprintf(fileID,'\t\t</DataArray> \n');
