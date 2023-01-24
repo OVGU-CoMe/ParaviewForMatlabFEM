@@ -36,10 +36,23 @@ by the nodal IDs 1, 2, 3, 4, the second one by 5, 6, 7, 8, and the third one by 
 ### **DataArray: "types"** ###
 This block defines for each element an integer referring to its element type, such as 9 for linear quadratic elements, or 5 for linear triangular elements. 
 
+Which element type is used, is defined determined in the function 'writevtu.m'. No use input is needed.
+
 ## **Point Data** ##
 This block contains nodal values, i.e. results associated with the different nodes, such as displacements, strain and stresses. Each of the different fields is stored in its own DataArray. The field names and number of components
 are given in the opening DataArray tag by "Name" and "NumberOfComponents".  
 
 ## **Cell Data** ##
 In some cases, the exported data contains values, that are accosiated with the elements and not by the nodes, such as material IDs, or domain IDs. Such data is defined in the "CellData" block.
+
+
+# Usage #
+The .vtu file is created by the Matlab function writevtu(...) with the following inputs.
+
+## dim ##
+
+## DataStructures ##
+
+## PlotSettings ##
+
 
