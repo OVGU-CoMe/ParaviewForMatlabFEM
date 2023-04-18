@@ -4,7 +4,7 @@ This visualisation toolbox is used for exporting FEM results computed in Matlab 
 
 # VTU File Structure Exported files #
 
-The exported `.vtu` files is wrapped by the staring tags `<VTKFile>`, `<UnstructuredGrid>` and `</Piece>`, and closing tags `</Piece>`, `</VTKFile>` and `</UnstructuredGrid>`, in order.
+The exported `.vtu` file is wrapped by the staring tags `<VTKFile>`, `<UnstructuredGrid>` and `<Piece>`, and closing tags `</Piece>`, `</VTKFile>` and `</UnstructuredGrid>`, in the given order.
 The actuall data for the visualization is defined in the innermost block, i.e. the Piece-block, and includes the following for 4 blocks:
 
 - Points
@@ -33,7 +33,7 @@ such that each element with its corresponding nodes are defined in individual li
 ### **DataArray: "offsets"** ###
 Since the connectivity array is parsed by simply scanning its content linearly, Paraview must know which elements are defined by which points. For this, the "offsets" vector is used, which tells which element is defined by how many 
 consequtive nodal IDs in the connectivity array. Note that this allows for a meshes containing different element types. As an example, if the "offsets" array starts with the values 4, 4, 3, it means that the first element is defined 
-by the nodal IDs 1, 2, 3, 4, the second one by 5, 6, 7, 8, and the third one by 9, 10, 11, regardless of the actual layout of the connectivity matrix.
+by the first 4 entries in the connectivity matrix, then, entries 5-8 define the second element, while the entries 9-11 (3 nodes) the third one.
 
 ### **DataArray: "types"** ###
 This block defines for each element an integer referring to its element type, such as 9 for linear quadratic elements, or 5 for linear triangular elements. 
@@ -65,25 +65,25 @@ nodes and cells. Both `PointData` and `CellData` are cell arrays, where for each
 <br/><br/>
 
 ```matlab
-PointData{1}.name = 'Displacement';
-PointData{1}.array = [UX, UY, UZ];
+DataStructure1.PointData{1}.name = 'Displacement';
+DataStructure1.PointData{1}.array = [UX, UY, UZ];
 ```
 
 while the second field is an arbitrary function with 4 fields. Here, also the component names are given.
 <br/><br/>
 
 ```matlab
-PointData{2}.name = 'My function';
-PointData{2}.componentNames = {'F1', 'F1', 'F3', 'F4'};
-PointData{2}.array = [F1, F2, F3, F4];
+DataStructure1.PointData{2}.name = 'My function';
+DataStructure1.PointData{2}.componentNames = {'F1', 'F1', 'F3', 'F4'};
+DataStructure1.PointData{2}.array = [F1, F2, F3, F4];
 ```
 
 The same structure applies also to content of `CellData`. For example:
 <br/><br/>
 
 ```matlab
-CellData{1}.name = 'Material IDs';
-CellData{1}.array = matIDs;
+DataStructure1.CellData{1}.name = 'Material IDs';
+DataStructure1.CellData{1}.array = matIDs;
 ```
 
 
