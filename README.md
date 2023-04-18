@@ -59,7 +59,7 @@ elaborated below.
 
 ## Usage of writevtu(...) ##
 
-The `.vtu` file is created by the Matlab function `writevtu(...)` with the following inputs.
+The `.vtu` file is created by the Matlab function `writevtu(dim,DataStructures,PlotSettings)` with the following inputs.
 
 **dim** - Dimension of the problem. It should be either '2D' or '3D'.
 
@@ -102,8 +102,26 @@ additional information, meta-data to the exported .vtu file. The content of `fil
 cell array, and the strings stored in the individual cells are written below each other. A use-case for `fileInfo` is for example the excitation frequency or step data associated with the given plot. If no `fileInfo` is required, simply
 write `fileInfo = "";`.  
 
-## Usage of `mergeParaviewFiles2Collection(...)` ##
+## Usage of writeParaviewCollection(...) ##
 
-sds
+The function is used if there are multiple `.vtu` files associated with different time steps or deformations steps, which should be merged into a `.pvd` file to open the simulation results in Paraview more 
+efficiently. Note that idividually importing all exported `.vtu` files in Paraview results in overfilling the *Pipeline Browser*, and it also does not allow for using Filters that analyse the results over the
+entire time range. The function is called with the inputs `writeParaviewCollection(sourceFolder,sourceFilenames,goalFolder,goalFilename,timesteps)`, where `sourceFolder` is a string of the folder containing the individual
+`.vtu` files, and `sourceFilenames` is a cell array containing all the filenames that should be added to the collection. Furthermore, `goalFolder` and `goalFilename` are the location to export to and name for chosen for the 
+`.pvd` file. Note that  writeParaviewCollection(...) can handle sourceFilenames both of the structure
 
+```matlab
+myExportedData_001.vtu'
+myExportedData_002.vtu'
+myExportedData_003.vtu'
+...
+```
 
+and
+
+```matlab
+myExportedData_1.vtu'
+myExportedData_2.vtu'
+myExportedData_3.vtu'
+...
+```
