@@ -47,13 +47,16 @@ are given in the opening DataArray tag by "Name" and "NumberOfComponents".
 ## **Cell Data** ##
 In some cases, the exported data contains values, that are accosiated with the elements and not by the nodes, such as material IDs, or domain IDs. Such data is defined in the "CellData" block.
 
+
+
+
 --- 
 # Usage #
 The exporting to Paraview is achieved using the three functions
 
  - `writevtu(...)`
- - `mergeParaviewFiles2Collection(...)`
  - `writeParaviewCollection(...)`
+ - `mergeParaviewFiles2Collection(...)`
 
 elaborated below.
 
@@ -97,18 +100,12 @@ DataStructure1.CellData{1}.array = matIDs;
 ```
 
 
-**PlotSettings** - It is a structure variable with the fields `PlottSettings.filedir`, `PlottSettings.filename`, and `PlottSettings.fileInfo`, where the first two fields are selfexplanatory. The third field allows the user to write
+**PlotSettings** - It is a structure variable with the fields `PlottSettings.filedir`, `PlottSettings.filename`, and `PlottSettings.fileInfo`, where the first two fields are self-explanatory. The third field allows the user to write
 additional information, meta-data to the exported .vtu file. The content of `fileInfo` will be added as comments to the vtu file. If `fileInfo` contains so much text that it requires multiple lines in the vtu file, `fileInfo` is a
 cell array, and the strings stored in the individual cells are written below each other. A use-case for `fileInfo` is for example the excitation frequency or step data associated with the given plot. If no `fileInfo` is required, simply
 write `fileInfo = "";`.  
 
-## Usage of writeParaviewCollection(...) ##
-
-The function is used if there are multiple `.vtu` files associated with different time steps or deformations steps, which should be merged into a `.pvd` file to open the simulation results in Paraview more 
-efficiently. Note that idividually importing all exported `.vtu` files in Paraview results in overfilling the *Pipeline Browser*, and it also does not allow for using Filters that analyse the results over the
-entire time range. The function is called with the inputs `writeParaviewCollection(sourceFolder,sourceFilenames,goalFolder,goalFilename,timesteps)`, where `sourceFolder` is a string of the folder containing the individual
-`.vtu` files, and `sourceFilenames` is a cell array containing all the filenames that should be added to the collection. Furthermore, `goalFolder` and `goalFilename` are the location to export to and name for chosen for the 
-`.pvd` file. Note that  writeParaviewCollection(...) can handle sourceFilenames both of the structure
+*NOTE*: If a simulation with multiple time steps, loads steps, frequency steps, etc. is conducted, the results associated with the indivudual steps should be exported to individual `.vtu` files with the number form
 
 ```matlab
 myExportedData_001.vtu'
@@ -117,7 +114,7 @@ myExportedData_003.vtu'
 ...
 ```
 
-and
+or
 
 ```matlab
 myExportedData_1.vtu'
@@ -125,3 +122,26 @@ myExportedData_2.vtu'
 myExportedData_3.vtu'
 ...
 ```
+
+Of course, if the form `myExportedData_00i.vtu` is used, `myExportedData_00000i.vtu` is also valied, if there are so many steps to be exported. Then, the exported `.vtu` files can be merged to so called *Collections* and
+stored in a single `.pvd` file using the functions `writeParaviewCollection(...)` and `mergeParaviewFiles2Collection(...)`. 
+
+## Usage of writeParaviewCollection(...) ##
+
+The function is used if there are multiple `.vtu` files associated with different time steps or deformations steps, which should be merged into a `.pvd` file to open the simulation results in Paraview more 
+efficiently. Note that idividually importing all exported `.vtu` files in Paraview results in overfilling the *Pipeline Browser*, and it also does not allow for using *Filters* that analyse the results over the
+entire time range. The function is called with the inputs `writeParaviewCollection(sourceFolder,sourceFilenames,goalFolder,goalFilename,timesteps)`, where `sourceFolder` is a string of the folder containing the individual
+`.vtu` files, and `sourceFilenames` is a cell array containing all the filenames that should be added to the collection. Furthermore, `goalFolder` and `goalFilename` are the location to export to and name chosen for the 
+`.pvd` file. Finally, the input `timeSteps` contains the time values associated with the individual `.vtu` files. If a large deformation analysis or frequency domain analyis is conducted, `timeSteps` simply contains 
+the load parameter or the excitation frequeincy. 
+
+Note that writeParaviewCollection(...) can handle `sourceFilenames` with different numbering approaches, such as
+
+
+
+## Usage of mergeParaviewFiles2Collection(...) ##
+
+This function is called with the inputs `mergeParaviewFiles2Collection(sourceFolder,goalFolder,goalFilename,timesteps)` and it is really similar to `writeParaviewCollection(...)`. The only difference is that it does not require 
+the input of `sourceFilenames`, and instead it simply uses all the files in given source folder, provided that these have a coherent file names and numbering. 
+
+Clearly, the functionality of `mergeParaviewFiles2Collection(...)` could be simply integrated into `writeParaviewCollection(...)` by passing an empty input for `sourceFilenames`. Mabye in the future...
