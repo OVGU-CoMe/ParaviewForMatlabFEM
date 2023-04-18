@@ -49,6 +49,16 @@ In some cases, the exported data contains values, that are accosiated with the e
 
 --- 
 # Usage #
+The exporting to Paraview is achieved using the three functions
+
+ - `writevtu(...)`
+ - `mergeParaviewFiles2Collection(...)`
+ - `writeParaviewCollection(...)`
+
+elaborated below.
+
+## Usage of writevtu(...) ##
+
 The `.vtu` file is created by the Matlab function `writevtu(...)` with the following inputs.
 
 **dim** - Dimension of the problem. It should be either '2D' or '3D'.
@@ -91,5 +101,9 @@ DataStructure1.CellData{1}.array = matIDs;
 additional information, meta-data to the exported .vtu file. The content of `fileInfo` will be added as comments to the vtu file. If `fileInfo` contains so much text that it requires multiple lines in the vtu file, `fileInfo` is a
 cell array, and the strings stored in the individual cells are written below each other. A use-case for `fileInfo` is for example the excitation frequency or step data associated with the given plot. If no `fileInfo` is required, simply
 write `fileInfo = "";`.  
+
+## Usage of `mergeParaviewFiles2Collection(...)` ##
+
+sds
 
 
