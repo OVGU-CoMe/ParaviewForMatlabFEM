@@ -105,7 +105,9 @@ additional information, meta-data to the exported .vtu file. The content of `fil
 cell array, and the strings stored in the individual cells are written below each other. A use-case for `fileInfo` is for example the excitation frequency or step data associated with the given plot. If no `fileInfo` is required, simply
 write `fileInfo = "";`.  
 
-*NOTE*: If a simulation with multiple time steps, loads steps, frequency steps, etc. is conducted, the results associated with the indivudual steps should be exported to individual `.vtu` files with the number form
+***NOTE***: If a simulation with multiple time steps, loads steps, frequency steps, etc. is conducted, the results associated with the indivudual steps should be exported to individual `.vtu` files with the numbering format
+<br/><br/>
+
 
 ```matlab
 myExportedData_001.vtu'
@@ -115,6 +117,7 @@ myExportedData_003.vtu'
 ```
 
 or
+<br/><br/>
 
 ```matlab
 myExportedData_1.vtu'
@@ -123,25 +126,22 @@ myExportedData_3.vtu'
 ...
 ```
 
-Of course, if the form `myExportedData_00i.vtu` is used, `myExportedData_00000i.vtu` is also valied, if there are so many steps to be exported. Then, the exported `.vtu` files can be merged to so called *Collections* and
+Of course, if the format `myExportedData_00i.vtu` is used, `myExportedData_00000i.vtu` is also valid, if there are so many steps to be exported. Then, the exported `.vtu` files can be merged to so called *Collections* and
 stored in a single `.pvd` file using the functions `writeParaviewCollection(...)` and `mergeParaviewFiles2Collection(...)`. 
 
 ## Usage of writeParaviewCollection(...) ##
 
 The function is used if there are multiple `.vtu` files associated with different time steps or deformations steps, which should be merged into a `.pvd` file to open the simulation results in Paraview more 
-efficiently. Note that idividually importing all exported `.vtu` files in Paraview results in overfilling the *Pipeline Browser*, and it also does not allow for using *Filters* that analyse the results over the
+efficiently. Note that idividually importing all exported `.vtu` files in Paraview results in overfilling the *Pipeline Browser*, and it also does not allow for using *Filters* that analyze the results over the
 entire time range. The function is called with the inputs `writeParaviewCollection(sourceFolder,sourceFilenames,goalFolder,goalFilename,timesteps)`, where `sourceFolder` is a string of the folder containing the individual
 `.vtu` files, and `sourceFilenames` is a cell array containing all the filenames that should be added to the collection. Furthermore, `goalFolder` and `goalFilename` are the location to export to and name chosen for the 
 `.pvd` file. Finally, the input `timeSteps` contains the time values associated with the individual `.vtu` files. If a large deformation analysis or frequency domain analyis is conducted, `timeSteps` simply contains 
-the load parameter or the excitation frequeincy. 
-
-Note that writeParaviewCollection(...) can handle `sourceFilenames` with different numbering approaches, such as
-
+the load parameter or the excitation frequency. 
 
 
 ## Usage of mergeParaviewFiles2Collection(...) ##
 
 This function is called with the inputs `mergeParaviewFiles2Collection(sourceFolder,goalFolder,goalFilename,timesteps)` and it is really similar to `writeParaviewCollection(...)`. The only difference is that it does not require 
-the input of `sourceFilenames`, and instead it simply uses all the files in given source folder, provided that these have a coherent file names and numbering. 
+the input of `sourceFilenames`, and instead it simply uses all the files in the given source folder, provided that these have a coherent file names and numbering. 
 
-Clearly, the functionality of `mergeParaviewFiles2Collection(...)` could be simply integrated into `writeParaviewCollection(...)` by passing an empty input for `sourceFilenames`. Mabye in the future...
+Clearly, the functionality of `mergeParaviewFiles2Collection(...)` could be simply integrated into `writeParaviewCollection(...)` by enabling the passing of an empty input for `sourceFilenames`. Mabye in the future...
