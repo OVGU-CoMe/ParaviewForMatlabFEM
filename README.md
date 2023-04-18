@@ -38,7 +38,7 @@ by the first 4 entries in the connectivity matrix, then, entries 5-8 define the 
 ### **DataArray: "types"** ###
 This block defines for each element an integer referring to its element type, such as 9 for linear quadratic elements, or 5 for linear triangular elements. 
 
-Which element type is used, is defined determined in the function 'writevtu.m'. No use input is needed.
+Which element type is used, is defined determined in the function 'writevtu.m'. No user input is needed.
 
 ## **Point Data** ##
 This block contains nodal values, i.e. results associated with the different nodes, such as displacements, strain and stresses. Each of the different fields is stored in its own DataArray. The field names and number of components
@@ -89,6 +89,7 @@ DataStructure1.CellData{1}.array = matIDs;
 
 **PlotSettings** - It is a structure variable with the fields `PlottSettings.filedir`, `PlottSettings.filename`, and `PlottSettings.fileInfo`, where the first two fields are selfexplanatory. The third field allows the user to write
 additional information, meta-data to the exported .vtu file. The content of `fileInfo` will be added as comments to the vtu file. If `fileInfo` contains so much text that it requires multiple lines in the vtu file, `fileInfo` is a
-cell array, and the strings stored in the individual cells are written below each other. A use-case for `fileInfo` is for example the excitation frequency or step data associated with the given plot.
+cell array, and the strings stored in the individual cells are written below each other. A use-case for `fileInfo` is for example the excitation frequency or step data associated with the given plot. If no `fileInfo` is required, simply
+write `fileInfo = "";`.  
 
 
