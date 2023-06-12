@@ -59,6 +59,10 @@ if strcmp(dim,'2D')
         elemnodes(i) = 8; 
         data{i}.Connectivity = data{i}.Connectivity(:,1:8);
         elemtype(i) = 23;  % VTK_QUADRATIC_QUAD (2D, p=2, serendipity)
+        
+    elseif elemnodes(i) == 8
+        elemtype(i) = 23;  % VTK_QUADRATIC_QUAD (2D, p=2, serendipity)
+        
     end
     
 elseif strcmp(dim,'3D')
@@ -98,6 +102,9 @@ elseif strcmp(dim,'3D')
         % ignored 
         elemnodes(i) = 20; 
         data{i}.Connectivity = data{i}.Connectivity(:,[1:12, 17:20, 13:16]);
+        elemtype(i) = 25; % VTK_QUADRATIC_HEXAHEDRON (3D, p=2, serendipity)
+        
+    elseif elemnodes(i) == 20
         elemtype(i) = 25; % VTK_QUADRATIC_HEXAHEDRON (3D, p=2, serendipity)
         
     end
