@@ -50,6 +50,9 @@ if strcmp(dim,'2D')
         
     elseif elemnodes(i) == 4
         elemtype(i) = 9;  % VTK_QUAD (2D, p=1)
+	
+	elseif elemnodes(i) == 6
+        elemtype(i) = 22;  % VTK_QUADRATIC_TRIANGLE (2D, p=2)
     
     elseif elemnodes(i) == 9
         % Second order Lagrangian elements with full nodes are not
@@ -94,6 +97,9 @@ elseif strcmp(dim,'3D')
         
     elseif elemnodes(i) == 8
         elemtype(i) = 12; % VTK_HEXAHEDRON (3D, p=1)
+		
+	elseif elemnodes(i) == 10
+        elemtype(i) = 24;  % VTK_QUADRATIC_TETRA (3D, p=2)
         
     elseif elemnodes(i) == 27
         % Second order Lagrangian elements with full nodes are not 
