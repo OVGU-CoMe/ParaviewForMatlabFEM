@@ -146,7 +146,9 @@ the input of `sourceFilenames`, and instead it simply uses all the files in the 
 
 Clearly, the functionality of `mergeParaviewFiles2Collection(...)` could be simply integrated into `writeParaviewCollection(...)` by enabling the passing of an empty input for `sourceFilenames`. Mabye in the future...
 
-## Element types ##
+---
+
+# Element types #
 
 The toolbox supports various element types. The code recognizes autmatically which element type is used based on the number of columns in the connectivity matrix, i.e., on the number of nodes constituting
 the elements. Thus, no user command is required to specify the element type. For a correct visalization of the results, the nodal data passed to the `writevtu(...)` function must follow the numbering system
