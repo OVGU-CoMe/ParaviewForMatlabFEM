@@ -145,3 +145,8 @@ This function is called with the inputs `mergeParaviewFiles2Collection(sourceFol
 the input of `sourceFilenames`, and instead it simply uses all the files in the given source folder, provided that these have a coherent file names and numbering. 
 
 Clearly, the functionality of `mergeParaviewFiles2Collection(...)` could be simply integrated into `writeParaviewCollection(...)` by enabling the passing of an empty input for `sourceFilenames`. Mabye in the future...
+
+## Element types ##
+
+![Scheme](elemTypes1.PNG)
+![Scheme](elemTypes2.PNG)
