@@ -102,13 +102,7 @@ elseif strcmp(dim,'3D')
         elemtype(i) = 24;  % VTK_QUADRATIC_TETRA (3D, p=2)
         
     elseif elemnodes(i) == 27
-        % Second order Lagrangian elements with full nodes are not 
-        % supported. In this case, the element is reduced to 3D
-        % serendipity elemenet with 20 nodes. Higher order nodes will be
-        % ignored 
-        elemnodes(i) = 20; 
-        data{i}.Connectivity = data{i}.Connectivity(:,[1:12, 17:20, 13:16]);
-        elemtype(i) = 25; % VTK_QUADRATIC_HEXAHEDRON (3D, p=2, serendipity)
+        elemtype(i) = 29; % VTK_TRIQUADRATIC_HEXAHEDRON (3D, p=2, lagrangian)
         
     elseif elemnodes(i) == 20
         elemtype(i) = 25; % VTK_QUADRATIC_HEXAHEDRON (3D, p=2, serendipity)
