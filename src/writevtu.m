@@ -45,7 +45,10 @@ elemnodes(i) = size(data{i}.Connectivity,2); % Number of nodes per element
 % Available element types:
 % https://cloud.ovgu.de/apps/files/?dir=/SEM-SCM_supplementary/Documents&openfile=42921472
 if strcmp(dim,'2D')
-    if elemnodes(i) == 3
+    if elemnodes(i) == 2
+        elemtype(i) = 4; % VTK_POLY_LINE (2D, p=1)
+
+    elseif elemnodes(i) == 3
         elemtype(i) = 5; % VTK_TRIANGLE (2D, p=1)
         
     elseif elemnodes(i) == 4
@@ -69,8 +72,11 @@ if strcmp(dim,'2D')
     end
     
 elseif strcmp(dim,'3D')
+
+    if elemnodes(i) == 2
+        elemtype(i) = 4; % VTK_POLY_LINE (2D, p=1)
     
-    if elemnodes(i) == 4
+    elseif elemnodes(i) == 4
         
         % Note that in its current state, the function decides which
         % element type should be used for the visualization based on the

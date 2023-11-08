@@ -26,7 +26,18 @@ sourceFilenames = f(:,1);
 val = zeros(length(sourceFilenames),1);
 for i = 1:length(sourceFilenames)
    s = split(sourceFilenames{i},{goalFilename,'.vtu'});
-   val(i) = str2double(s{2});
+
+   % Find non-empty cells:
+   ID = find( ~cellfun(@isempty,s) == 1 );
+
+   if isempty(ID)
+        error('The filename should be given in a format: "goalFilename######.vtu"')
+   end
+   ID = s{ID(end)};
+
+   ID = regexp(ID,'\d*','Match');
+   ID = ID{1};
+   val(i) = str2double(ID);
 end
 
 [~,idx] = sort(val);
