@@ -9,22 +9,31 @@ fprintf(fileID,'<?xml version="1.0"?> \n');
 fprintf(fileID,'<VTKFile type="Collection" version="0.1"> \n');
 fprintf(fileID,'<Collection> \n');
 
-prevTimestepSTR = num2str(timesteps(1));
-dupIDs = [];
+if unique(timesteps) == 1
+    timeData = false;
+else
+    timeData = true;
+    prevTimestepSTR = num2str(timesteps(1));
+    dupIDs = [];
+end
+
 for i = 1:length(timesteps)
 
         timestepSTR = num2str(timesteps(i));
-        if i > 1 && strcmp(timestepSTR,prevTimestepSTR)
-           dupIDs(end+1) = i;
-           lastdigit = str2num(timestepSTR(end));
-           
-           if lastdigit>5
-               lastdigit = lastdigit-1;
-           else
-               lastdigit = lastdigit+1;
-           end
-           
-           timestepSTR(end) = num2str(lastdigit);
+
+        if timeData
+            if i > 1 && strcmp(timestepSTR,prevTimestepSTR)
+                dupIDs(end+1) = i;
+                lastdigit = str2num(timestepSTR(end));
+
+                if lastdigit>5
+                    lastdigit = lastdigit-1;
+                else
+                    lastdigit = lastdigit+1;
+                end
+
+                timestepSTR(end) = num2str(lastdigit);
+            end
         end
         
         fprintf(fileID, ['<DataSet ',...
@@ -47,7 +56,7 @@ fprintf(fileID,'</VTKFile> \n');
 % eigenfrequencies) write an output file in which the modified IDs are
 % listed.
 
-if ~isempty(dupIDs)
+if timeData && ~isempty(dupIDs)
     filename = 'Modified_timesteps_for_Paraview.txt';
 
     warning([num2str(length(dupIDs)) ' duplicated timestep values were encountered!',...
