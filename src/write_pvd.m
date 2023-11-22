@@ -1,23 +1,37 @@
-function writeParaviewCollection(sourceFolder,sourceFilenames,goalFolder,goalFilename,timesteps)
+function write_pvd(sourceFolder,sourceFilenames,goalFolder,goalFilename,timesteps)
 
 sourceFolder = strrep(sourceFolder,'\','/');
 
 fileID = fopen(fullfile(goalFolder, [goalFilename '.pvd']),'wt');
 disp(['VTU collection file written: ' fullfile(goalFolder,[goalFilename '.pvd'])])
 
+%% Process timesteps
+% In some cases, it is desired to use this function while assigning each
+% files to the same time step. To achieve this, timesteps should be either
+% empty, a single integer, or a vector containing the same integer.
+timeData = false;
+switch numel(timesteps)
+    case 0
+        timesteps = zeros(size(sourceFilenames));
+    case 1
+        timesteps = timesteps * ones(size(sourceFilenames));
+    otherwise
+
+        if unique(timesteps) == 1
+        else
+            timeData = true;
+            prevTimestepSTR = num2str(timesteps(1));
+            dupIDs = [];
+        end
+end
+
+%% Write data
+
 fprintf(fileID,'<?xml version="1.0"?> \n');
 fprintf(fileID,'<VTKFile type="Collection" version="0.1"> \n');
 fprintf(fileID,'<Collection> \n');
 
-if unique(timesteps) == 1
-    timeData = false;
-else
-    timeData = true;
-    prevTimestepSTR = num2str(timesteps(1));
-    dupIDs = [];
-end
-
-for i = 1:length(timesteps)
+for i = 1:length(sourceFilenames)
 
         timestepSTR = num2str(timesteps(i));
 
