@@ -16,7 +16,7 @@ function writevtu(dim,data,PlotSettings)
 %           information, such as excitation frequency.
 
 filedir = PlotSettings.filedir;
-filename = [PlotSettings.filename '.vtu'];
+filename = append(PlotSettings.filename,'.vtu');
 fileInfo = PlotSettings.fileInfo;
 if ~iscell(fileInfo)
     fileInfo = {fileInfo};
@@ -165,13 +165,10 @@ fprintf(fileID,'\t\t</DataArray> \n');
 
 % Define cells / Offsets --------------------------------------------------
 fprintf(fileID,'\t\t<DataArray type="Int32" Name="offsets" NumberOfComponents=" 1" format="ascii"> \n');
+offset = 0;
 for i = 1:length(data)
-    if i == 1
-        offset = 0;
-    else
-        offset = elemnodes(i-1)*NOC(i-1);
-    end
     fprintf(fileID,'\t\t\t%d \n', ( elemnodes(i)*(1:NOC(i)) + offset )');
+    offset = offset + elemnodes(i)*NOC(i);
 end
 fprintf(fileID,'\t\t</DataArray> \n');
 
